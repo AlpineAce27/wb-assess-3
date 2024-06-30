@@ -60,12 +60,40 @@ const OTHER_FOSSILS = [
   },
 ];
 
-// TODO: Replace this comment with your code
-
 app.get('/random-fossil.json', (req, res) => {
   const randomFossil = lodash.sample(OTHER_FOSSILS);
   res.json(randomFossil);
 });
+
+app.get('/top-fossils', (req, res) => {
+  if(req.session.name) {
+    res.render('top-fossils.html.njk', {MOST_LIKED_FOSSILS: MOST_LIKED_FOSSILS, name : req.session.name})
+  }
+  else{
+    console.log("attemted to go to '/top-fossils' with no name, redirecting to homepage.html.njk")
+    res.redirect('homepage.html.njk')
+  }
+  
+})
+
+app.get('/', (req, res) => {
+  if(!req.session.name){
+    console.log("attemted to go to '/' with no name")
+    res.render('homepage.html.njk')
+  }
+  else{
+    console.log("Name already exists in session, redirected to top-fossils")
+    res.redirect('top-fossils.html.njk', {MOST_LIKED_FOSSILS : MOST_LIKED_FOSSILS, name : req.session.name})
+  }
+  
+})
+
+app.get('/get-name', (req, res) => {
+  req.session.name = req.query.name
+  console.log("Name saved: " + req.session.name)
+  res.redirect('/top-fossils')
+})
+
 
 ViteExpress.listen(app, port, () => {
   console.log(`Server running on http://localhost:${port}...`);
