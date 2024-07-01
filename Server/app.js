@@ -68,12 +68,12 @@ app.get('/random-fossil.json', (req, res) => {
 app.get('/top-fossils', (req, res) => {
   if(req.session.name) {
     res.render('top-fossils.html.njk', {MOST_LIKED_FOSSILS: MOST_LIKED_FOSSILS, name : req.session.name})
+    console.log(MOST_LIKED_FOSSILS)
   }
   else{
     console.log("attemted to go to '/top-fossils' with no name, redirecting to homepage.html.njk")
-    res.redirect('homepage.html.njk')
+    res.render('homepage.html.njk')
   }
-  
 })
 
 app.get('/', (req, res) => {
@@ -83,9 +83,8 @@ app.get('/', (req, res) => {
   }
   else{
     console.log("Name already exists in session, redirected to top-fossils")
-    res.redirect('top-fossils.html.njk', {MOST_LIKED_FOSSILS : MOST_LIKED_FOSSILS, name : req.session.name})
+    res.render('top-fossils.html.njk', {MOST_LIKED_FOSSILS : MOST_LIKED_FOSSILS, name : req.session.name})
   }
-  
 })
 
 app.get('/get-name', (req, res) => {
@@ -93,7 +92,6 @@ app.get('/get-name', (req, res) => {
   console.log("Name saved: " + req.session.name)
   res.redirect('/top-fossils')
 })
-
 
 ViteExpress.listen(app, port, () => {
   console.log(`Server running on http://localhost:${port}...`);
