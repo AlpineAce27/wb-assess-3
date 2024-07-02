@@ -1,4 +1,3 @@
-//import axios from 'axios';
 
 console.log('javascript connected')
 
@@ -6,7 +5,7 @@ const listDisplay = document.querySelector('#to-do-list')
 
 const displayAllTasks = (array) => {
     //clear out whats on the page
-    drinkDisplay.innerHTML = ``
+    listDisplay.innerHTML = ``
     
     array.forEach((el) => {
         const itemLine = document.createElement('section')
