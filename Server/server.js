@@ -1,5 +1,5 @@
 import express from 'express';
-//import axios from 'axios';
+import axios from 'axios';
 import cors from 'cors';
 
 const app = express();
@@ -30,11 +30,9 @@ let toDoList = [
 let globalID = 5
 //endpoints
 
-app.get('/', (req, res) => {
+app.get('/toDoList', (req, res) => {
     console.log('/ endpoint hit')
-    displayAllTasks(toDoList)
     res.send(toDoList)
-    res.render('index.html')
 })
 
 app.post('/newItem', (req, res) => {
@@ -43,20 +41,24 @@ app.post('/newItem', (req, res) => {
         id: globalID,
         task : req.body.task
     }
-    console.log(newItem)
-    toDoList.push(newItem)
+    //console.log(newItem)
     //add that list item to the toDoList object
+    toDoList.push(newItem)
     res.send(toDoList)
-    //res.render('index.html')
+    globalID++
 })
 
-app.delete('/removeItem', (req, res) => {
+app.delete('/removeItem/:id', (req, res) => {
     console.log('/removeItem endpoint hit')
-    
-    console.log(req.body.id)
-    //find the item with a corresponding id and remove it from the toDoList object
+    const id2kill = Number(req.params.id)
+    //console.log(id2kill)
+    const newArray = toDoList.filter((el) => {
+        //console.log(el.id, id2kill)
+        return( el.id !== id2kill)
+    })
+    //console.log(newArray)
+    toDoList = newArray
     res.send(toDoList)
-    //res.render('index.html')
 })
 
 // app.put('/editItem', (req, res) => {
