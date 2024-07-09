@@ -61,12 +61,19 @@ app.delete('/removeItem/:id', (req, res) => {
     res.send(toDoList)
 })
 
-// app.put('/editItem', (req, res) => {
-//     console.log('/editItem endpoint hit')
-//     //grab the data from input for (item ID and new text)
-//     //find the item with a a corresponding id and change the text to reflect the changes
-//     res.send(toDoList)
-//     //res.render('index.html')
-// })
+app.put('/editItem/:id', (req, res) => {
+    console.log('/editItem endpoint hit')
+    //grab the data from input for (item ID and new text)
+    const editRequest = {
+        id: req.params.id,
+        task: req.body.task
+    }
+    //find the item in the array with a corresponding ID
+    const editItem = toDoList.find((el) => el.id == editRequest.id)
+    //change the task of that item
+    editItem.task = editRequest.task
+    //send it back
+    res.send(toDoList)
+})
 
 app.listen(port, () => console.log(`Flying high at http://localhost:${port}`))
